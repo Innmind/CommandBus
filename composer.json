@@ -1,0 +1,26 @@
+{
+    "name": "innmind/command-bus",
+    "type": "library",
+    "description": "Command Bus library",
+    "keywords": ["command bus", "ddd"],
+    "homepage": "http://github.com/Innmind/CommandBus",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Baptiste Langlade",
+            "email": "langlade.baptiste@gmail.com"
+        }
+    ],
+    "support": {
+        "issues": "http://github.com/Innmind/CommandBus/issues"
+    },
+    "require": {
+        "php": "~7.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Innmind\\CommandBus\\": "src/",
+            "Tests\\Innmind\\CommandBus\\": "tests/"
+        }
+    }
+}
