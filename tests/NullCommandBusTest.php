@@ -25,4 +25,11 @@ class NullCommandBusTest extends \PHPUnit_Framework_TestCase
     {
         (new NullCommandBus)->handle([]);
     }
+
+    public function testHandle()
+    {
+        $this->assertNull(
+            (new NullCommandBus)->handle(new \stdClass)
+        );
+    }
 }
