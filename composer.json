@@ -18,7 +18,8 @@
         "php": "~7.0",
         "innmind/immutable": "~1.9",
         "psr/log": "^1.0",
-        "ramsey/uuid": "^3.5"
+        "ramsey/uuid": "^3.5",
+        "innmind/reflection": "^1.1"
     },
     "autoload": {
         "psr-4": {

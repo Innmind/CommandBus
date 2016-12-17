@@ -24,6 +24,19 @@ class LoggerCommandBusTest extends \PHPUnit_Framework_TestCase
 
     public function testHandle()
     {
+        $command = new class() {
+            private $foo = 'bar';
+            private $bar;
+            public $baz;
+
+            public function bar(): int
+            {
+                return 42;
+            }
+        };
+        $command->baz = $baz = new \stdClass;
+        $baz->wat = 'wat';
+        $class = get_class($command);
         $reference = null;
         $logger = $this->createMock(LoggerInterface::class);
         $logger
@@ -31,10 +44,10 @@ class LoggerCommandBusTest extends \PHPUnit_Framework_TestCase
             ->method('info')
             ->with(
                 'Command about to be executed',
-                $this->callback(function($data) use (&$reference) {
+                $this->callback(function($data) use (&$reference, $class) {
                     $reference = $data['reference'] ?? null;
 
-                    return $data['class'] === 'stdClass' &&
+                    return $data['class'] === $class &&
                         $data['data'] === [
                             'foo' => 'bar',
                             'bar' => 42,
@@ -53,11 +66,6 @@ class LoggerCommandBusTest extends \PHPUnit_Framework_TestCase
                     return $data === ['reference' => $reference];
                 })
             );
-        $command = new \stdClass;
-        $command->foo = 'bar';
-        $command->bar = 42;
-        $command->baz = $baz = new \stdClass;
-        $baz->wat = 'wat';
         $innerBus = $this->createMock(CommandBusInterface::class);
         $innerBus
             ->expects($this->once())
