@@ -4,6 +4,7 @@ declare(strict_types = 1);
 namespace Innmind\CommandBus;
 
 use Innmind\CommandBus\Exception\InvalidArgumentException;
+use Innmind\Reflection\ReflectionObject as InnmindReflectionObject;
 use Psr\Log\LoggerInterface;
 use Ramsey\Uuid\Uuid;
 
@@ -52,16 +53,20 @@ final class LoggerCommandBus implements CommandBusInterface
     private function extractData($object): array
     {
         $refl = new \ReflectionObject($object);
-        $data = [];
+        $properties = [];
 
         foreach ($refl->getProperties() as $property) {
-            $value = $property->getValue($object);
+            $properties[] = $property->getName();
+        }
 
+        $data = (new InnmindReflectionObject($object))
+            ->extract($properties)
+            ->toPrimitive();
+
+        foreach ($data as $key => $value) {
             if (is_object($value)) {
-                $value = $this->extractData($value);
+                $data[$key] = $this->extractData($value);
             }
-
-            $data[$property->getName()] = $value;
         }
 
         return $data;
