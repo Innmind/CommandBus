@@ -60,4 +60,24 @@ class QueueableCommandBusTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(2, $count);
         unset($this->commandBus);
     }
+
+    public function testResetWhenExceptionThrown()
+    {
+        $bus = $this->createMock(CommandBusInterface::class);
+        $bus
+            ->expects($this->at(0))
+            ->method('handle')
+            ->will($this->throwException(new \Exception));
+        $bus
+            ->expects($this->at(1))
+            ->method('handle');
+        $queue = new QueueableCommandBus($bus);
+
+        try {
+            $this->assertNull($queue->handle(new \stdClass));
+        } catch (\Exception $e) {
+            //pass
+        }
+        $this->assertNull($queue->handle(new \stdClass));
+    }
 }
