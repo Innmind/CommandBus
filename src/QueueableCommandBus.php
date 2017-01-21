@@ -34,7 +34,15 @@ final class QueueableCommandBus implements CommandBusInterface
         }
 
         $this->inHandle = true;
-        $this->commandBus->handle($command);
+
+        try {
+            $this->commandBus->handle($command);
+        } catch (\Throwable $e) {
+            $this->commandQueue = new Sequence;
+            $this->inHandle = false;
+            throw $e;
+        }
+
         $this->inHandle = false;
 
         $this
