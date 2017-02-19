@@ -9,8 +9,9 @@ use Innmind\CommandBus\{
     CommandBusInterface
 };
 use Innmind\Immutable\Map;
+use PHPUnit\Framework\TestCase;
 
-class QueueableCommandBusTest extends \PHPUnit_Framework_TestCase
+class QueueableCommandBusTest extends TestCase
 {
     public function testInterface()
     {
