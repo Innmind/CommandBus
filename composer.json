@@ -15,11 +15,11 @@
         "issues": "http://github.com/Innmind/CommandBus/issues"
     },
     "require": {
-        "php": "~7.0",
-        "innmind/immutable": "~1.9",
+        "php": "~7.1",
+        "innmind/immutable": "~2.0",
         "psr/log": "^1.0",
         "ramsey/uuid": "^3.5",
-        "innmind/reflection": "^1.1"
+        "innmind/reflection": "~2.0"
     },
     "autoload": {
         "psr-4": {
