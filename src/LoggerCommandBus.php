@@ -59,16 +59,22 @@ final class LoggerCommandBus implements CommandBusInterface
             $properties[] = $property->getName();
         }
 
-        $data = (new InnmindReflectionObject($object))
+        return (new InnmindReflectionObject($object))
             ->extract($properties)
-            ->toPrimitive();
+            ->map(function(string $property, $value) {
+                if (is_object($value)) {
+                    return $this->extractData($value);
+                }
 
-        foreach ($data as $key => $value) {
-            if (is_object($value)) {
-                $data[$key] = $this->extractData($value);
-            }
-        }
+                return $value;
+            })
+            ->reduce(
+                [],
+                function(array $carry, string $property, $value): array {
+                    $carry[$property] = $value;
 
-        return $data;
+                    return $carry;
+                }
+            );
     }
 }

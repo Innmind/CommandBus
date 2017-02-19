@@ -8,8 +8,9 @@ use Innmind\CommandBus\{
     CommandBusInterface
 };
 use Psr\Log\LoggerInterface;
+use PHPUnit\Framework\TestCase;
 
-class LoggerCommandBusTest extends \PHPUnit_Framework_TestCase
+class LoggerCommandBusTest extends TestCase
 {
     public function testInterface()
     {

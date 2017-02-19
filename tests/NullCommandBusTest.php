@@ -7,8 +7,9 @@ use Innmind\CommandBus\{
     NullCommandBus,
     CommandBusInterface
 };
+use PHPUnit\Framework\TestCase;
 
-class NullCommandBusTest extends \PHPUnit_Framework_TestCase
+class NullCommandBusTest extends TestCase
 {
     public function testInterface()
     {
