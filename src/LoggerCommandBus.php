@@ -4,7 +4,10 @@ declare(strict_types = 1);
 namespace Innmind\CommandBus;
 
 use Innmind\CommandBus\Exception\InvalidArgumentException;
-use Innmind\Reflection\ReflectionObject as InnmindReflectionObject;
+use Innmind\Reflection\{
+    ReflectionObject as InnmindReflectionObject,
+    ExtractionStrategy\ReflectionStrategy
+};
 use Psr\Log\LoggerInterface;
 use Ramsey\Uuid\Uuid;
 
@@ -59,7 +62,12 @@ final class LoggerCommandBus implements CommandBusInterface
             $properties[] = $property->getName();
         }
 
-        return (new InnmindReflectionObject($object))
+        return (new InnmindReflectionObject(
+            $object,
+            null,
+            null,
+            new ReflectionStrategy
+        ))
             ->extract($properties)
             ->map(function(string $property, $value) {
                 if (is_object($value)) {

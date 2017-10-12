@@ -7,6 +7,7 @@ use Innmind\CommandBus\{
     LoggerCommandBus,
     CommandBusInterface
 };
+use Innmind\Immutable\Str;
 use Psr\Log\LoggerInterface;
 use PHPUnit\Framework\TestCase;
 
@@ -37,6 +38,7 @@ class LoggerCommandBusTest extends TestCase
         };
         $command->baz = $baz = new \stdClass;
         $baz->wat = 'wat';
+        $baz->str = new Str('watever');
         $class = get_class($command);
         $reference = null;
         $logger = $this->createMock(LoggerInterface::class);
@@ -51,9 +53,13 @@ class LoggerCommandBusTest extends TestCase
                     return $data['class'] === $class &&
                         $data['data'] === [
                             'foo' => 'bar',
-                            'bar' => 42,
+                            'bar' => null,
                             'baz' => [
                                 'wat' => 'wat',
+                                'str' => [
+                                    'value' => 'watever',
+                                    'encoding' => 'UTF-8',
+                                ],
                             ],
                         ];
                 })
