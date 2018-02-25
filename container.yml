@@ -1,0 +1,20 @@
+arguments:
+    handlers: map<string, callable>
+    logger: '?Psr\Log\LoggerInterface'
+
+expose:
+    bus: $bus.default
+    queue: $bus.queue
+    logger: $bus.logger
+
+services:
+    bus:
+        logger Innmind\CommandBus\LoggerCommandBus:
+            - '@decorated'
+            - '$logger'
+
+        queue Innmind\CommandBus\QueueableCommandBus:
+            - '@decorated'
+
+        default Innmind\CommandBus\CommandBus:
+            - '$handlers'
