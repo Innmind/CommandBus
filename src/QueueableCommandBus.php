@@ -6,6 +6,9 @@ namespace Innmind\CommandBus;
 use Innmind\CommandBus\Exception\InvalidArgumentException;
 use Innmind\Immutable\Sequence;
 
+/**
+ * @deprecated See EnqueueCommandBus and DequeueCommandBus
+ */
 final class QueueableCommandBus implements CommandBusInterface
 {
     private $commandBus;
@@ -14,6 +17,8 @@ final class QueueableCommandBus implements CommandBusInterface
 
     public function __construct(CommandBusInterface $commandBus)
     {
+        trigger_error('See EnqueueCommandBus and DequeueCommandBus', E_USER_DEPRECATED);
+
         $this->commandBus = $commandBus;
         $this->commandQueue = new Sequence;
     }
