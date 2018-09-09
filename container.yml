@@ -6,6 +6,8 @@ expose:
     bus: $bus.default
     queue: $bus.queue
     logger: $bus.logger
+    enqueue: $bus.enqueue
+    dequeue: $bus.dequeue
 
 services:
     bus:
@@ -18,3 +20,12 @@ services:
 
         default Innmind\CommandBus\CommandBus:
             - '$handlers'
+
+        enqueue Innmind\CommandBus\EnqueueCommandBus:
+            - $queue
+
+        dequeue Innmind\CommandBus\DequeueCommandBus:
+            - '@decorated'
+            - '$queue'
+
+    queue Innmind\CommandBus\Queue: []
