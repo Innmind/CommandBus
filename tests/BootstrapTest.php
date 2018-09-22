@@ -8,8 +8,10 @@ use Innmind\CommandBus\{
     CommandBus,
     DequeueCommandBus,
     EnqueueCommandBus,
+    LoggerCommandBus
 };
 use Innmind\Immutable\Map;
+use Psr\Log\LoggerInterface;
 use PHPUnit\Framework\TestCase;
 
 class BootstrapTest extends TestCase
@@ -20,6 +22,7 @@ class BootstrapTest extends TestCase
         $bus = $buses['bus'];
         $enqueue = $buses['enqueue'];
         $dequeue = $buses['dequeue'];
+        $log = $buses['logger'];
 
         $this->assertInternalType('callable', $bus);
         $this->assertInstanceOf(
@@ -31,6 +34,13 @@ class BootstrapTest extends TestCase
         $this->assertInstanceOf(
             DequeueCommandBus::class,
             $dequeue($bus(new Map('string', 'callable')))
+        );
+        $this->assertInternalType('callable', $log);
+        $log = $log($this->createMock(LoggerInterface::class));
+        $this->assertInternalType('callable', $log);
+        $this->assertInstanceOf(
+            LoggerCommandBus::class,
+            $log($bus(new Map('string', 'callable')))
         );
     }
 
