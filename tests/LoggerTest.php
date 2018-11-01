@@ -29,16 +29,26 @@ class LoggerTest extends TestCase
         $command = new class() {
             private $foo = 'bar';
             private $bar;
-            public $baz;
+            private $baz;
+
+            public function __construct()
+            {
+                $this->baz = new class {
+                    private $wat = 'wat';
+                    private $str;
+
+                    public function __construct()
+                    {
+                        $this->str = new Str('watever');
+                    }
+                };
+            }
 
             public function bar(): int
             {
                 return 42;
             }
         };
-        $command->baz = $baz = new \stdClass;
-        $baz->wat = 'wat';
-        $baz->str = new Str('watever');
         $class = get_class($command);
         $reference = null;
         $logger = $this->createMock(LoggerInterface::class);

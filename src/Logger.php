@@ -4,7 +4,8 @@ declare(strict_types = 1);
 namespace Innmind\CommandBus;
 
 use Innmind\Reflection\{
-    ReflectionObject as InnmindReflectionObject,
+    ReflectionObject,
+    ReflectionClass,
     ExtractionStrategy\ReflectionStrategy,
 };
 use Psr\Log\LoggerInterface;
@@ -52,20 +53,8 @@ final class Logger implements CommandBus
      */
     private function extractData($object): array
     {
-        $refl = new \ReflectionObject($object);
-        $properties = [];
-
-        foreach ($refl->getProperties() as $property) {
-            $properties[] = $property->getName();
-        }
-
-        return (new InnmindReflectionObject(
-            $object,
-            null,
-            null,
-            new ReflectionStrategy
-        ))
-            ->extract($properties)
+        return ReflectionObject::of($object, null, null, new ReflectionStrategy)
+            ->extract(...ReflectionClass::of(get_class($object))->properties())
             ->map(function(string $property, $value) {
                 if (is_object($value)) {
                     return $this->extractData($value);
