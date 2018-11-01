@@ -87,17 +87,4 @@ class LoggerCommandBusTest extends TestCase
         $this->assertTrue(is_string($reference));
         $this->assertTrue(!empty($reference));
     }
-
-    /**
-     * @expectedException Innmind\CommandBus\Exception\InvalidArgumentException
-     */
-    public function testThrowWhenNotHandlingObject()
-    {
-        $bus = new LoggerCommandBus(
-            $this->createMock(CommandBusInterface::class),
-            $this->createMock(LoggerInterface::class)
-        );
-
-        $bus->handle('foo');
-    }
 }

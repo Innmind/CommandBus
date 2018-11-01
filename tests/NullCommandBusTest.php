@@ -19,14 +19,6 @@ class NullCommandBusTest extends TestCase
         );
     }
 
-    /**
-     * @expectedException Innmind\CommandBus\Exception\InvalidArgumentException
-     */
-    public function testThrowWhenCommandIsNotAnObject()
-    {
-        (new NullCommandBus)->handle([]);
-    }
-
     public function testHandle()
     {
         $this->assertNull(

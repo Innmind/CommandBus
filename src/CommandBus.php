@@ -22,15 +22,8 @@ final class CommandBus implements CommandBusInterface
         $this->handlers = $handlers;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function handle($command)
+    public function handle(object $command): void
     {
-        if (!is_object($command)) {
-            throw new InvalidArgumentException;
-        }
-
         $handle = $this->handlers->get(get_class($command));
         $handle($command);
     }

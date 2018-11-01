@@ -14,10 +14,7 @@ final class DequeueCommandBus implements CommandBusInterface
         $this->queue = $queue;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function handle($command)
+    public function handle(object $command): void
     {
         $this->bus->handle($command);
 

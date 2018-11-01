@@ -29,14 +29,6 @@ class CommandBusTest extends TestCase
     }
 
     /**
-     * @expectedException Innmind\CommandBus\Exception\InvalidArgumentException
-     */
-    public function testThrowWhenCommandIsNotAnObject()
-    {
-        (new CommandBus(new Map('string', 'callable')))->handle([]);
-    }
-
-    /**
      * @expectedException Innmind\Immutable\Exception\InvalidArgumentException
      */
     public function testThrowWhenHandlerNotFound()

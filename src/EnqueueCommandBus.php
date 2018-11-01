@@ -12,10 +12,7 @@ final class EnqueueCommandBus implements CommandBusInterface
         $this->queue = $queue;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function handle($command)
+    public function handle(object $command): void
     {
         $this->queue->enqueue($command);
     }

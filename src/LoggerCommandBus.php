@@ -3,7 +3,6 @@ declare(strict_types = 1);
 
 namespace Innmind\CommandBus;
 
-use Innmind\CommandBus\Exception\InvalidArgumentException;
 use Innmind\Reflection\{
     ReflectionObject as InnmindReflectionObject,
     ExtractionStrategy\ReflectionStrategy
@@ -27,12 +26,8 @@ final class LoggerCommandBus implements CommandBusInterface
     /**
      * {@inheritdoc}
      */
-    public function handle($command)
+    public function handle(object $command): void
     {
-        if (!is_object($command)) {
-            throw new InvalidArgumentException;
-        }
-
         $reference = (string) Uuid::uuid4();
 
         $this->logger->info(
