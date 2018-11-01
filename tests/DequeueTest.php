@@ -4,19 +4,19 @@ declare(strict_types = 1);
 namespace Tests\Innmind\CommandBus;
 
 use Innmind\CommandBus\{
-    DequeueCommandBus,
+    Dequeue,
     CommandBus,
     Queue,
 };
 use PHPUnit\Framework\TestCase;
 
-class DequeueCommandBusTest extends TestCase
+class DequeueTest extends TestCase
 {
     public function testInterface()
     {
         $this->assertInstanceOf(
             CommandBus::class,
-            new DequeueCommandBus(
+            new Dequeue(
                 $this->createMock(CommandBus::class),
                 new Queue
             )
@@ -25,7 +25,7 @@ class DequeueCommandBusTest extends TestCase
 
     public function testInvokeWithNoEnqueue()
     {
-        $handle = new DequeueCommandBus(
+        $handle = new Dequeue(
             $inner = $this->createMock(CommandBus::class),
             new Queue
         );
@@ -40,7 +40,7 @@ class DequeueCommandBusTest extends TestCase
 
     public function testInvokeWithEnqueue()
     {
-        $handle = new DequeueCommandBus(
+        $handle = new Dequeue(
             $inner = $this->createMock(CommandBus::class),
             $queue = new Queue
         );

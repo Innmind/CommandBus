@@ -10,7 +10,7 @@ use Innmind\Reflection\{
 use Psr\Log\LoggerInterface;
 use Ramsey\Uuid\Uuid;
 
-final class LoggerCommandBus implements CommandBus
+final class Logger implements CommandBus
 {
     private $handle;
     private $logger;

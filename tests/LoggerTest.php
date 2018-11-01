@@ -4,20 +4,20 @@ declare(strict_types = 1);
 namespace Tests\Innmind\CommandBus;
 
 use Innmind\CommandBus\{
-    LoggerCommandBus,
+    Logger,
     CommandBus,
 };
 use Innmind\Immutable\Str;
 use Psr\Log\LoggerInterface;
 use PHPUnit\Framework\TestCase;
 
-class LoggerCommandBusTest extends TestCase
+class LoggerTest extends TestCase
 {
     public function testInterface()
     {
         $this->assertInstanceOf(
             CommandBus::class,
-            new LoggerCommandBus(
+            new Logger(
                 $this->createMock(CommandBus::class),
                 $this->createMock(LoggerInterface::class)
             )
@@ -78,7 +78,7 @@ class LoggerCommandBusTest extends TestCase
             ->expects($this->once())
             ->method('__invoke')
             ->with($command);
-        $handle = new LoggerCommandBus(
+        $handle = new Logger(
             $innerBus,
             $logger
         );

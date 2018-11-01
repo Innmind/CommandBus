@@ -6,9 +6,9 @@ namespace Tests\Innmind\CommandBus;
 use function Innmind\CommandBus\bootstrap;
 use Innmind\CommandBus\{
     Map,
-    DequeueCommandBus,
-    EnqueueCommandBus,
-    LoggerCommandBus,
+    Dequeue,
+    Enqueue,
+    Logger,
 };
 use Innmind\Immutable\Map as IMap;
 use Psr\Log\LoggerInterface;
@@ -29,17 +29,17 @@ class BootstrapTest extends TestCase
             Map::class,
             $bus(new IMap('string', 'callable'))
         );
-        $this->assertInstanceOf(EnqueueCommandBus::class, $enqueue);
+        $this->assertInstanceOf(Enqueue::class, $enqueue);
         $this->assertInternalType('callable', $dequeue);
         $this->assertInstanceOf(
-            DequeueCommandBus::class,
+            Dequeue::class,
             $dequeue($bus(new IMap('string', 'callable')))
         );
         $this->assertInternalType('callable', $log);
         $log = $log($this->createMock(LoggerInterface::class));
         $this->assertInternalType('callable', $log);
         $this->assertInstanceOf(
-            LoggerCommandBus::class,
+            Logger::class,
             $log($bus(new IMap('string', 'callable')))
         );
     }

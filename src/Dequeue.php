@@ -3,7 +3,7 @@ declare(strict_types = 1);
 
 namespace Innmind\CommandBus;
 
-final class DequeueCommandBus implements CommandBus
+final class Dequeue implements CommandBus
 {
     private $handle;
     private $queue;

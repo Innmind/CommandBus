@@ -3,7 +3,7 @@ declare(strict_types = 1);
 
 namespace Innmind\CommandBus;
 
-final class EnqueueCommandBus implements CommandBus
+final class Enqueue implements CommandBus
 {
     private $queue;
 

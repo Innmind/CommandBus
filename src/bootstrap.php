@@ -14,13 +14,13 @@ function bootstrap(): array
         'bus' => static function(MapInterface $handlers): CommandBus {
             return new Map($handlers);
         },
-        'enqueue' => new EnqueueCommandBus($queue),
+        'enqueue' => new Enqueue($queue),
         'dequeue' => static function(CommandBus $bus) use ($queue): CommandBus {
-            return new DequeueCommandBus($bus, $queue);
+            return new Dequeue($bus, $queue);
         },
         'logger' => static function(LoggerInterface $logger): callable {
             return static function(CommandBus $bus) use ($logger): CommandBus {
-                return new LoggerCommandBus($bus, $logger);
+                return new Logger($bus, $logger);
             };
         },
     ];

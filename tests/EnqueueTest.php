@@ -4,25 +4,25 @@ declare(strict_types = 1);
 namespace Tests\Innmind\CommandBus;
 
 use Innmind\CommandBus\{
-    EnqueueCommandBus,
+    Enqueue,
     CommandBus,
     Queue,
 };
 use PHPUnit\Framework\TestCase;
 
-class EnqueueCommandBusTest extends TestCase
+class EnqueueTest extends TestCase
 {
     public function testInterface()
     {
         $this->assertInstanceOf(
             CommandBus::class,
-            new EnqueueCommandBus(new Queue)
+            new Enqueue(new Queue)
         );
     }
 
     public function testInvokation()
     {
-        $handle = new EnqueueCommandBus($queue = new Queue);
+        $handle = new Enqueue($queue = new Queue);
         $command = new \stdClass;
 
         $this->assertNull($handle($command));
