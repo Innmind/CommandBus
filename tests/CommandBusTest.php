@@ -20,11 +20,11 @@ class CommandBusTest extends TestCase
         );
     }
 
-    /**
-     * @expectedException Innmind\CommandBus\Exception\InvalidArgumentException
-     */
     public function testThrowWhenInvalidHandlerMap()
     {
+        $this->expectException(\TypeError::class);
+        $this->expectExceptionMessage('Argument 1 must be of type MapInterface<string, callable>');
+
         new CommandBus(new Map('string', 'string'));
     }
 

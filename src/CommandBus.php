@@ -3,7 +3,6 @@ declare(strict_types = 1);
 
 namespace Innmind\CommandBus;
 
-use Innmind\CommandBus\Exception\InvalidArgumentException;
 use Innmind\Immutable\MapInterface;
 
 final class CommandBus implements CommandBusInterface
@@ -16,7 +15,7 @@ final class CommandBus implements CommandBusInterface
             (string) $handlers->keyType() !== 'string' ||
             (string) $handlers->valueType() !== 'callable'
         ) {
-            throw new InvalidArgumentException;
+            throw new \TypeError('Argument 1 must be of type MapInterface<string, callable>');
         }
 
         $this->handlers = $handlers;
