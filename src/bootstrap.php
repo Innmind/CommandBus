@@ -23,5 +23,10 @@ function bootstrap(): array
                 return new Logger($bus, $logger);
             };
         },
+        'lock' => static function(ShouldLock $shouldLock = null): callable {
+            return static function(CommandBus $bus) use ($shouldLock): CommandBus {
+                return new Lock($bus, $shouldLock);
+            };
+        },
     ];
 }
