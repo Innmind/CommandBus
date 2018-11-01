@@ -3,17 +3,9 @@ declare(strict_types = 1);
 
 namespace Innmind\CommandBus;
 
-use Innmind\CommandBus\Exception\InvalidArgumentException;
-
-final class NullCommandBus implements CommandBusInterface
+final class NullCommandBus implements CommandBus
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function handle($command)
+    public function __invoke(object $command): void
     {
-        if (!is_object($command)) {
-            throw new InvalidArgumentException;
-        }
     }
 }

@@ -5,7 +5,7 @@ namespace Tests\Innmind\CommandBus;
 
 use Innmind\CommandBus\{
     NullCommandBus,
-    CommandBusInterface
+    CommandBus,
 };
 use PHPUnit\Framework\TestCase;
 
@@ -14,23 +14,15 @@ class NullCommandBusTest extends TestCase
     public function testInterface()
     {
         $this->assertInstanceOf(
-            CommandBusInterface::class,
+            CommandBus::class,
             new NullCommandBus
         );
     }
 
-    /**
-     * @expectedException Innmind\CommandBus\Exception\InvalidArgumentException
-     */
-    public function testThrowWhenCommandIsNotAnObject()
-    {
-        (new NullCommandBus)->handle([]);
-    }
-
-    public function testHandle()
+    public function testInvokation()
     {
         $this->assertNull(
-            (new NullCommandBus)->handle(new \stdClass)
+            (new NullCommandBus)(new \stdClass)
         );
     }
 }

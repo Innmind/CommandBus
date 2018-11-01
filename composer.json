@@ -16,10 +16,10 @@
     },
     "require": {
         "php": "~7.2",
-        "innmind/immutable": "~2.0",
+        "innmind/immutable": "~2.10",
         "psr/log": "^1.0",
         "ramsey/uuid": "^3.5",
-        "innmind/reflection": "~2.0"
+        "innmind/reflection": "~3.0"
     },
     "autoload": {
         "psr-4": {
@@ -33,8 +33,7 @@
         }
     },
     "require-dev": {
-        "phpunit/phpunit": "~6.0",
-        "innmind/compose": "^1.3"
+        "phpunit/phpunit": "~7.0"
     },
     "scripts": {
         "test": "vendor/bin/phpunit --colors=always"

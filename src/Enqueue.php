@@ -3,7 +3,7 @@ declare(strict_types = 1);
 
 namespace Innmind\CommandBus;
 
-final class EnqueueCommandBus implements CommandBusInterface
+final class Enqueue implements CommandBus
 {
     private $queue;
 
@@ -12,10 +12,7 @@ final class EnqueueCommandBus implements CommandBusInterface
         $this->queue = $queue;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function handle($command)
+    public function __invoke(object $command): void
     {
         $this->queue->enqueue($command);
     }

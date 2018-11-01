@@ -5,12 +5,14 @@ namespace Tests\Innmind\CommandBus;
 
 use function Innmind\CommandBus\bootstrap;
 use Innmind\CommandBus\{
-    CommandBus,
-    DequeueCommandBus,
-    EnqueueCommandBus,
-    LoggerCommandBus
+    Map,
+    Dequeue,
+    Enqueue,
+    Logger,
+    Lock,
+    ShouldLock\Except,
 };
-use Innmind\Immutable\Map;
+use Innmind\Immutable\Map as IMap;
 use Psr\Log\LoggerInterface;
 use PHPUnit\Framework\TestCase;
 
@@ -23,24 +25,32 @@ class BootstrapTest extends TestCase
         $enqueue = $buses['enqueue'];
         $dequeue = $buses['dequeue'];
         $log = $buses['logger'];
+        $lock = $buses['lock'];
 
         $this->assertInternalType('callable', $bus);
         $this->assertInstanceOf(
-            CommandBus::class,
-            $bus(new Map('string', 'callable'))
+            Map::class,
+            $bus(new IMap('string', 'callable'))
         );
-        $this->assertInstanceOf(EnqueueCommandBus::class, $enqueue);
+        $this->assertInstanceOf(Enqueue::class, $enqueue);
         $this->assertInternalType('callable', $dequeue);
         $this->assertInstanceOf(
-            DequeueCommandBus::class,
-            $dequeue($bus(new Map('string', 'callable')))
+            Dequeue::class,
+            $dequeue($bus(new IMap('string', 'callable')))
         );
         $this->assertInternalType('callable', $log);
         $log = $log($this->createMock(LoggerInterface::class));
         $this->assertInternalType('callable', $log);
         $this->assertInstanceOf(
-            LoggerCommandBus::class,
-            $log($bus(new Map('string', 'callable')))
+            Logger::class,
+            $log($bus(new IMap('string', 'callable')))
+        );
+        $this->assertInternalType('callable', $lock);
+        $lock = $lock(new Except);
+        $this->assertInternalType('callable', $lock);
+        $this->assertInstanceOf(
+            Lock::class,
+            $lock($bus(new IMap('string', 'callable')))
         );
     }
 
@@ -52,16 +62,16 @@ class BootstrapTest extends TestCase
         $dequeue = $buses['dequeue'];
 
         $called = 0;
-        $handlers = (new Map('string', 'callable'))
-            ->put('stdClass', function() use ($enqueue): void {
-                $enqueue->handle($this);
+        $handlers = IMap::of('string', 'callable')
+            ('stdClass', function() use ($enqueue): void {
+                $enqueue($this);
             })
-            ->put(get_class($this), static function() use (&$called): void {
+            (get_class($this), static function() use (&$called): void {
                 ++$called;
             });
 
-        $bus = $dequeue($bus($handlers));
-        $this->assertNull($bus->handle(new \stdClass));
+        $handle = $dequeue($bus($handlers));
+        $this->assertNull($handle(new \stdClass));
         $this->assertSame(1, $called);
     }
 }

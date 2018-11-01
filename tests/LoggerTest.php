@@ -4,41 +4,51 @@ declare(strict_types = 1);
 namespace Tests\Innmind\CommandBus;
 
 use Innmind\CommandBus\{
-    LoggerCommandBus,
-    CommandBusInterface
+    Logger,
+    CommandBus,
 };
 use Innmind\Immutable\Str;
 use Psr\Log\LoggerInterface;
 use PHPUnit\Framework\TestCase;
 
-class LoggerCommandBusTest extends TestCase
+class LoggerTest extends TestCase
 {
     public function testInterface()
     {
         $this->assertInstanceOf(
-            CommandBusInterface::class,
-            new LoggerCommandBus(
-                $this->createMock(CommandBusInterface::class),
+            CommandBus::class,
+            new Logger(
+                $this->createMock(CommandBus::class),
                 $this->createMock(LoggerInterface::class)
             )
         );
     }
 
-    public function testHandle()
+    public function testInvokation()
     {
         $command = new class() {
             private $foo = 'bar';
             private $bar;
-            public $baz;
+            private $baz;
+
+            public function __construct()
+            {
+                $this->baz = new class {
+                    private $wat = 'wat';
+                    private $str;
+
+                    public function __construct()
+                    {
+                        $this->str = new Str('watever');
+                    }
+                };
+            }
 
             public function bar(): int
             {
                 return 42;
             }
         };
-        $command->baz = $baz = new \stdClass;
-        $baz->wat = 'wat';
-        $baz->str = new Str('watever');
         $class = get_class($command);
         $reference = null;
         $logger = $this->createMock(LoggerInterface::class);
@@ -73,31 +83,18 @@ class LoggerCommandBusTest extends TestCase
                     return $data === ['reference' => $reference];
                 })
             );
-        $innerBus = $this->createMock(CommandBusInterface::class);
+        $innerBus = $this->createMock(CommandBus::class);
         $innerBus
             ->expects($this->once())
-            ->method('handle')
+            ->method('__invoke')
             ->with($command);
-        $bus = new LoggerCommandBus(
+        $handle = new Logger(
             $innerBus,
             $logger
         );
 
-        $this->assertNull($bus->handle($command));
+        $this->assertNull($handle($command));
         $this->assertTrue(is_string($reference));
         $this->assertTrue(!empty($reference));
-    }
-
-    /**
-     * @expectedException Innmind\CommandBus\Exception\InvalidArgumentException
-     */
-    public function testThrowWhenNotHandlingObject()
-    {
-        $bus = new LoggerCommandBus(
-            $this->createMock(CommandBusInterface::class),
-            $this->createMock(LoggerInterface::class)
-        );
-
-        $bus->handle('foo');
     }
 }

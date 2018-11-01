@@ -4,50 +4,50 @@ declare(strict_types = 1);
 namespace Tests\Innmind\CommandBus;
 
 use Innmind\CommandBus\{
-    CommandBusInterface,
-    DequeueCommandBus,
+    Dequeue,
+    CommandBus,
     Queue,
 };
 use PHPUnit\Framework\TestCase;
 
-class DequeueCommandBusTest extends TestCase
+class DequeueTest extends TestCase
 {
     public function testInterface()
     {
         $this->assertInstanceOf(
-            CommandBusInterface::class,
-            new DequeueCommandBus(
-                $this->createMock(CommandBusInterface::class),
+            CommandBus::class,
+            new Dequeue(
+                $this->createMock(CommandBus::class),
                 new Queue
             )
         );
     }
 
-    public function testHandleWithNoEnqueue()
+    public function testInvokeWithNoEnqueue()
     {
-        $bus = new DequeueCommandBus(
-            $inner = $this->createMock(CommandBusInterface::class),
+        $handle = new Dequeue(
+            $inner = $this->createMock(CommandBus::class),
             new Queue
         );
         $command = new \stdClass;
         $inner
             ->expects($this->once())
-            ->method('handle')
+            ->method('__invoke')
             ->with($command);
 
-        $this->assertNull($bus->handle($command));
+        $this->assertNull($handle($command));
     }
 
-    public function testHandleWithEnqueue()
+    public function testInvokeWithEnqueue()
     {
-        $bus = new DequeueCommandBus(
-            $inner = $this->createMock(CommandBusInterface::class),
+        $handle = new Dequeue(
+            $inner = $this->createMock(CommandBus::class),
             $queue = new Queue
         );
         $command = new \stdClass;
         $inner
             ->expects($this->at(0))
-            ->method('handle')
+            ->method('__invoke')
             ->with($this->callback(static function($command) use ($queue): bool {
                 $queue->enqueue($command);
 
@@ -55,9 +55,9 @@ class DequeueCommandBusTest extends TestCase
             }));
         $inner
             ->expects($this->at(1))
-            ->method('handle')
+            ->method('__invoke')
             ->with($command);
 
-        $this->assertNull($bus->handle($command));
+        $this->assertNull($handle($command));
     }
 }
