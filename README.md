@@ -17,22 +17,19 @@ composer require innmind/command-bus
 ## Example
 
 ```php
-use Innmind\{
-    CommandBus\CommandBus,
-    Immutable\Map
-};
+use function Innmind\CommandBus\bootstrap;
+use Innmind\Immutable\Map;
 
 class MyCommand {}
 
-$bus = new CommandBus(
-    (new Map('string', 'callable'))
-        ->put(
-            MyCommand::class,
-            function(MyCommand $command) {
-                echo 'foo';
-            }
-        )
+$echo = function(MyCommand $command) {
+    echo 'foo';
+};
+
+$handle = bootstrap()['bus'](
+    Map::of('string', 'callable')
+        (MyCommand::class, $echo)
 );
 
-$bus->handle(new MyCommand); //prints 'foo' and return null;
+$handle(new MyCommand); //prints 'foo' and return null;
 ```
