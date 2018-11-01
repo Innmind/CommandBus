@@ -4,8 +4,8 @@ declare(strict_types = 1);
 namespace Tests\Innmind\CommandBus;
 
 use Innmind\CommandBus\{
-    CommandBus,
     DequeueCommandBus,
+    CommandBus,
     Queue,
 };
 use PHPUnit\Framework\TestCase;

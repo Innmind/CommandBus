@@ -5,7 +5,7 @@ namespace Innmind\CommandBus;
 
 use Innmind\Reflection\{
     ReflectionObject as InnmindReflectionObject,
-    ExtractionStrategy\ReflectionStrategy
+    ExtractionStrategy\ReflectionStrategy,
 };
 use Psr\Log\LoggerInterface;
 use Ramsey\Uuid\Uuid;

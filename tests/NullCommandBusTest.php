@@ -5,7 +5,7 @@ namespace Tests\Innmind\CommandBus;
 
 use Innmind\CommandBus\{
     NullCommandBus,
-    CommandBus
+    CommandBus,
 };
 use PHPUnit\Framework\TestCase;
 

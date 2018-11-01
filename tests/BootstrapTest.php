@@ -8,7 +8,7 @@ use Innmind\CommandBus\{
     Map,
     DequeueCommandBus,
     EnqueueCommandBus,
-    LoggerCommandBus
+    LoggerCommandBus,
 };
 use Innmind\Immutable\Map as IMap;
 use Psr\Log\LoggerInterface;

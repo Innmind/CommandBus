@@ -5,7 +5,7 @@ namespace Tests\Innmind\CommandBus;
 
 use Innmind\CommandBus\{
     Map,
-    CommandBus
+    CommandBus,
 };
 use Innmind\Immutable\Map as IMap;
 use PHPUnit\Framework\TestCase;

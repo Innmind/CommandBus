@@ -5,7 +5,7 @@ namespace Tests\Innmind\CommandBus;
 
 use Innmind\CommandBus\{
     LoggerCommandBus,
-    CommandBus
+    CommandBus,
 };
 use Innmind\Immutable\Str;
 use Psr\Log\LoggerInterface;
