@@ -40,13 +40,11 @@ class MapTest extends TestCase
     {
         $count = 0;
         $handle = new Map(
-            (new IMap('string', 'callable'))->put(
-                'stdClass',
-                function (\stdClass $command) use (&$count) {
+            IMap::of('string', 'callable')
+                ('stdClass',function (\stdClass $command) use (&$count) {
                     ++$count;
                     $this->assertSame('foo', $command->bar);
-                }
-            )
+                })
         );
 
         $command = new \stdClass;

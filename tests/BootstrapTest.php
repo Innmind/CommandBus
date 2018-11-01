@@ -52,11 +52,11 @@ class BootstrapTest extends TestCase
         $dequeue = $buses['dequeue'];
 
         $called = 0;
-        $handlers = (new IMap('string', 'callable'))
-            ->put('stdClass', function() use ($enqueue): void {
+        $handlers = IMap::of('string', 'callable')
+            ('stdClass', function() use ($enqueue): void {
                 $enqueue($this);
             })
-            ->put(get_class($this), static function() use (&$called): void {
+            (get_class($this), static function() use (&$called): void {
                 ++$called;
             });
 
