@@ -10,13 +10,13 @@ use Innmind\Reflection\{
 use Psr\Log\LoggerInterface;
 use Ramsey\Uuid\Uuid;
 
-final class LoggerCommandBus implements CommandBusInterface
+final class LoggerCommandBus implements CommandBus
 {
     private $handle;
     private $logger;
 
     public function __construct(
-        CommandBusInterface $handle,
+        CommandBus $handle,
         LoggerInterface $logger
     ) {
         $this->handle = $handle;

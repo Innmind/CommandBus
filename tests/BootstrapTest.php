@@ -5,12 +5,12 @@ namespace Tests\Innmind\CommandBus;
 
 use function Innmind\CommandBus\bootstrap;
 use Innmind\CommandBus\{
-    CommandBus,
+    Map,
     DequeueCommandBus,
     EnqueueCommandBus,
     LoggerCommandBus
 };
-use Innmind\Immutable\Map;
+use Innmind\Immutable\Map as IMap;
 use Psr\Log\LoggerInterface;
 use PHPUnit\Framework\TestCase;
 
@@ -26,21 +26,21 @@ class BootstrapTest extends TestCase
 
         $this->assertInternalType('callable', $bus);
         $this->assertInstanceOf(
-            CommandBus::class,
-            $bus(new Map('string', 'callable'))
+            Map::class,
+            $bus(new IMap('string', 'callable'))
         );
         $this->assertInstanceOf(EnqueueCommandBus::class, $enqueue);
         $this->assertInternalType('callable', $dequeue);
         $this->assertInstanceOf(
             DequeueCommandBus::class,
-            $dequeue($bus(new Map('string', 'callable')))
+            $dequeue($bus(new IMap('string', 'callable')))
         );
         $this->assertInternalType('callable', $log);
         $log = $log($this->createMock(LoggerInterface::class));
         $this->assertInternalType('callable', $log);
         $this->assertInstanceOf(
             LoggerCommandBus::class,
-            $log($bus(new Map('string', 'callable')))
+            $log($bus(new IMap('string', 'callable')))
         );
     }
 
@@ -52,7 +52,7 @@ class BootstrapTest extends TestCase
         $dequeue = $buses['dequeue'];
 
         $called = 0;
-        $handlers = (new Map('string', 'callable'))
+        $handlers = (new IMap('string', 'callable'))
             ->put('stdClass', function() use ($enqueue): void {
                 $enqueue($this);
             })

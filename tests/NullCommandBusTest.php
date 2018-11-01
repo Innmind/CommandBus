@@ -5,7 +5,7 @@ namespace Tests\Innmind\CommandBus;
 
 use Innmind\CommandBus\{
     NullCommandBus,
-    CommandBusInterface
+    CommandBus
 };
 use PHPUnit\Framework\TestCase;
 
@@ -14,7 +14,7 @@ class NullCommandBusTest extends TestCase
     public function testInterface()
     {
         $this->assertInstanceOf(
-            CommandBusInterface::class,
+            CommandBus::class,
             new NullCommandBus
         );
     }

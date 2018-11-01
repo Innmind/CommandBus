@@ -4,7 +4,7 @@ declare(strict_types = 1);
 namespace Tests\Innmind\CommandBus;
 
 use Innmind\CommandBus\{
-    CommandBusInterface,
+    CommandBus,
     EnqueueCommandBus,
     Queue,
 };
@@ -15,7 +15,7 @@ class EnqueueCommandBusTest extends TestCase
     public function testInterface()
     {
         $this->assertInstanceOf(
-            CommandBusInterface::class,
+            CommandBus::class,
             new EnqueueCommandBus(new Queue)
         );
     }

@@ -3,12 +3,12 @@ declare(strict_types = 1);
 
 namespace Innmind\CommandBus;
 
-final class DequeueCommandBus implements CommandBusInterface
+final class DequeueCommandBus implements CommandBus
 {
     private $handle;
     private $queue;
 
-    public function __construct(CommandBusInterface $handle, Queue $queue)
+    public function __construct(CommandBus $handle, Queue $queue)
     {
         $this->handle = $handle;
         $this->queue = $queue;

@@ -11,15 +11,15 @@ function bootstrap(): array
     $queue = new Queue;
 
     return [
-        'bus' => static function(MapInterface $handlers): CommandBusInterface {
-            return new CommandBus($handlers);
+        'bus' => static function(MapInterface $handlers): CommandBus {
+            return new Map($handlers);
         },
         'enqueue' => new EnqueueCommandBus($queue),
-        'dequeue' => static function(CommandBusInterface $bus) use ($queue): CommandBusInterface {
+        'dequeue' => static function(CommandBus $bus) use ($queue): CommandBus {
             return new DequeueCommandBus($bus, $queue);
         },
         'logger' => static function(LoggerInterface $logger): callable {
-            return static function(CommandBusInterface $bus) use ($logger): CommandBusInterface {
+            return static function(CommandBus $bus) use ($logger): CommandBus {
                 return new LoggerCommandBus($bus, $logger);
             };
         },

@@ -5,7 +5,7 @@ namespace Tests\Innmind\CommandBus;
 
 use Innmind\CommandBus\{
     LoggerCommandBus,
-    CommandBusInterface
+    CommandBus
 };
 use Innmind\Immutable\Str;
 use Psr\Log\LoggerInterface;
@@ -16,9 +16,9 @@ class LoggerCommandBusTest extends TestCase
     public function testInterface()
     {
         $this->assertInstanceOf(
-            CommandBusInterface::class,
+            CommandBus::class,
             new LoggerCommandBus(
-                $this->createMock(CommandBusInterface::class),
+                $this->createMock(CommandBus::class),
                 $this->createMock(LoggerInterface::class)
             )
         );
@@ -73,7 +73,7 @@ class LoggerCommandBusTest extends TestCase
                     return $data === ['reference' => $reference];
                 })
             );
-        $innerBus = $this->createMock(CommandBusInterface::class);
+        $innerBus = $this->createMock(CommandBus::class);
         $innerBus
             ->expects($this->once())
             ->method('__invoke')

@@ -4,19 +4,19 @@ declare(strict_types = 1);
 namespace Tests\Innmind\CommandBus;
 
 use Innmind\CommandBus\{
-    CommandBus,
-    CommandBusInterface
+    Map,
+    CommandBus
 };
-use Innmind\Immutable\Map;
+use Innmind\Immutable\Map as IMap;
 use PHPUnit\Framework\TestCase;
 
-class CommandBusTest extends TestCase
+class MapTest extends TestCase
 {
     public function testInterface()
     {
         $this->assertInstanceOf(
-            CommandBusInterface::class,
-            new CommandBus(new Map('string', 'callable'))
+            CommandBus::class,
+            new Map(new IMap('string', 'callable'))
         );
     }
 
@@ -25,7 +25,7 @@ class CommandBusTest extends TestCase
         $this->expectException(\TypeError::class);
         $this->expectExceptionMessage('Argument 1 must be of type MapInterface<string, callable>');
 
-        new CommandBus(new Map('string', 'string'));
+        new Map(new IMap('string', 'string'));
     }
 
     /**
@@ -33,14 +33,14 @@ class CommandBusTest extends TestCase
      */
     public function testThrowWhenHandlerNotFound()
     {
-        (new CommandBus(new Map('string', 'callable')))(new \stdClass);
+        (new Map(new IMap('string', 'callable')))(new \stdClass);
     }
 
     public function testInvokation()
     {
         $count = 0;
-        $handle = new CommandBus(
-            (new Map('string', 'callable'))->put(
+        $handle = new Map(
+            (new IMap('string', 'callable'))->put(
                 'stdClass',
                 function (\stdClass $command) use (&$count) {
                     ++$count;
