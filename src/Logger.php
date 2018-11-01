@@ -24,9 +24,6 @@ final class Logger implements CommandBus
         $this->logger = $logger;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function __invoke(object $command): void
     {
         $reference = (string) Uuid::uuid4();
