@@ -48,10 +48,7 @@ final class Logger implements CommandBus
         );
     }
 
-    /**
-     * @param object $object
-     */
-    private function extractData($object): array
+    private function extractData(object $object): array
     {
         return ReflectionObject::of($object, null, null, new ReflectionStrategy)
             ->extract(...ReflectionClass::of(get_class($object))->properties())
