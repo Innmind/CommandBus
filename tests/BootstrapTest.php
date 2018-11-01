@@ -10,7 +10,7 @@ use Innmind\CommandBus\{
     Enqueue,
     Logger,
     Lock,
-    SHouldLock\Except,
+    ShouldLock\Except,
 };
 use Innmind\Immutable\Map as IMap;
 use Psr\Log\LoggerInterface;
