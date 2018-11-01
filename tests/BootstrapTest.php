@@ -54,14 +54,14 @@ class BootstrapTest extends TestCase
         $called = 0;
         $handlers = (new Map('string', 'callable'))
             ->put('stdClass', function() use ($enqueue): void {
-                $enqueue->handle($this);
+                $enqueue($this);
             })
             ->put(get_class($this), static function() use (&$called): void {
                 ++$called;
             });
 
-        $bus = $dequeue($bus($handlers));
-        $this->assertNull($bus->handle(new \stdClass));
+        $handle = $dequeue($bus($handlers));
+        $this->assertNull($handle(new \stdClass));
         $this->assertSame(1, $called);
     }
 }

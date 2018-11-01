@@ -19,10 +19,10 @@ class NullCommandBusTest extends TestCase
         );
     }
 
-    public function testHandle()
+    public function testInvokation()
     {
         $this->assertNull(
-            (new NullCommandBus)->handle(new \stdClass)
+            (new NullCommandBus)(new \stdClass)
         );
     }
 }

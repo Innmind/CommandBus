@@ -24,7 +24,7 @@ class LoggerCommandBusTest extends TestCase
         );
     }
 
-    public function testHandle()
+    public function testInvokation()
     {
         $command = new class() {
             private $foo = 'bar';
@@ -76,14 +76,14 @@ class LoggerCommandBusTest extends TestCase
         $innerBus = $this->createMock(CommandBusInterface::class);
         $innerBus
             ->expects($this->once())
-            ->method('handle')
+            ->method('__invoke')
             ->with($command);
-        $bus = new LoggerCommandBus(
+        $handle = new LoggerCommandBus(
             $innerBus,
             $logger
         );
 
-        $this->assertNull($bus->handle($command));
+        $this->assertNull($handle($command));
         $this->assertTrue(is_string($reference));
         $this->assertTrue(!empty($reference));
     }

@@ -5,5 +5,5 @@ namespace Innmind\CommandBus;
 
 interface CommandBusInterface
 {
-    public function handle(object $command): void;
+    public function __invoke(object $command): void;
 }

@@ -33,13 +33,13 @@ class CommandBusTest extends TestCase
      */
     public function testThrowWhenHandlerNotFound()
     {
-        (new CommandBus(new Map('string', 'callable')))->handle(new \stdClass);
+        (new CommandBus(new Map('string', 'callable')))(new \stdClass);
     }
 
-    public function testHandle()
+    public function testInvokation()
     {
         $count = 0;
-        $bus = new CommandBus(
+        $handle = new CommandBus(
             (new Map('string', 'callable'))->put(
                 'stdClass',
                 function (\stdClass $command) use (&$count) {
@@ -51,7 +51,7 @@ class CommandBusTest extends TestCase
 
         $command = new \stdClass;
         $command->bar = 'foo';
-        $this->assertNull($bus->handle($command));
+        $this->assertNull($handle($command));
         $this->assertSame(1, $count);
     }
 }

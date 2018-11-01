@@ -5,7 +5,7 @@ namespace Innmind\CommandBus;
 
 final class NullCommandBus implements CommandBusInterface
 {
-    public function handle(object $command): void
+    public function __invoke(object $command): void
     {
     }
 }

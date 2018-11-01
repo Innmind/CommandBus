@@ -23,31 +23,31 @@ class DequeueCommandBusTest extends TestCase
         );
     }
 
-    public function testHandleWithNoEnqueue()
+    public function testInvokeWithNoEnqueue()
     {
-        $bus = new DequeueCommandBus(
+        $handle = new DequeueCommandBus(
             $inner = $this->createMock(CommandBusInterface::class),
             new Queue
         );
         $command = new \stdClass;
         $inner
             ->expects($this->once())
-            ->method('handle')
+            ->method('__invoke')
             ->with($command);
 
-        $this->assertNull($bus->handle($command));
+        $this->assertNull($handle($command));
     }
 
-    public function testHandleWithEnqueue()
+    public function testInvokeWithEnqueue()
     {
-        $bus = new DequeueCommandBus(
+        $handle = new DequeueCommandBus(
             $inner = $this->createMock(CommandBusInterface::class),
             $queue = new Queue
         );
         $command = new \stdClass;
         $inner
             ->expects($this->at(0))
-            ->method('handle')
+            ->method('__invoke')
             ->with($this->callback(static function($command) use ($queue): bool {
                 $queue->enqueue($command);
 
@@ -55,9 +55,9 @@ class DequeueCommandBusTest extends TestCase
             }));
         $inner
             ->expects($this->at(1))
-            ->method('handle')
+            ->method('__invoke')
             ->with($command);
 
-        $this->assertNull($bus->handle($command));
+        $this->assertNull($handle($command));
     }
 }

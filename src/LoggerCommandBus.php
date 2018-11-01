@@ -12,21 +12,21 @@ use Ramsey\Uuid\Uuid;
 
 final class LoggerCommandBus implements CommandBusInterface
 {
-    private $commandBus;
+    private $handle;
     private $logger;
 
     public function __construct(
-        CommandBusInterface $commandBus,
+        CommandBusInterface $handle,
         LoggerInterface $logger
     ) {
-        $this->commandBus = $commandBus;
+        $this->handle = $handle;
         $this->logger = $logger;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function handle(object $command): void
+    public function __invoke(object $command): void
     {
         $reference = (string) Uuid::uuid4();
 
@@ -38,7 +38,9 @@ final class LoggerCommandBus implements CommandBusInterface
                 'data' => $this->extractData($command),
             ]
         );
-        $this->commandBus->handle($command);
+
+        ($this->handle)($command);
+
         $this->logger->info(
             'Command executed',
             ['reference' => $reference]

@@ -20,12 +20,12 @@ class EnqueueCommandBusTest extends TestCase
         );
     }
 
-    public function testHandle()
+    public function testInvokation()
     {
-        $bus = new EnqueueCommandBus($queue = new Queue);
+        $handle = new EnqueueCommandBus($queue = new Queue);
         $command = new \stdClass;
 
-        $this->assertNull($bus->handle($command));
+        $this->assertNull($handle($command));
         $this->assertSame($command, $queue->dequeue());
     }
 }

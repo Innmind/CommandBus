@@ -5,21 +5,21 @@ namespace Innmind\CommandBus;
 
 final class DequeueCommandBus implements CommandBusInterface
 {
-    private $bus;
+    private $handle;
     private $queue;
 
-    public function __construct(CommandBusInterface $bus, Queue $queue)
+    public function __construct(CommandBusInterface $handle, Queue $queue)
     {
-        $this->bus = $bus;
+        $this->handle = $handle;
         $this->queue = $queue;
     }
 
-    public function handle(object $command): void
+    public function __invoke(object $command): void
     {
-        $this->bus->handle($command);
+        ($this->handle)($command);
 
         while ($this->queue->valid()) {
-            $this->bus->handle($this->queue->dequeue());
+            ($this->handle)($this->queue->dequeue());
         }
     }
 }

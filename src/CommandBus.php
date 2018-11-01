@@ -21,7 +21,7 @@ final class CommandBus implements CommandBusInterface
         $this->handlers = $handlers;
     }
 
-    public function handle(object $command): void
+    public function __invoke(object $command): void
     {
         $handle = $this->handlers->get(get_class($command));
         $handle($command);
