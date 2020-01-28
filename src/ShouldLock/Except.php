@@ -17,6 +17,6 @@ final class Except implements ShouldLock
 
     public function __invoke(\Throwable $e): bool
     {
-        return !$this->exceptions->contains(get_class($e));
+        return !$this->exceptions->contains(\get_class($e));
     }
 }

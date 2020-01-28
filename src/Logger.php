@@ -33,16 +33,16 @@ final class Logger implements CommandBus
             'Command about to be executed',
             [
                 'reference' => $reference,
-                'class' => get_class($command),
+                'class' => \get_class($command),
                 'data' => $this->extractData($command),
-            ]
+            ],
         );
 
         ($this->handle)($command);
 
         $this->logger->info(
             'Command executed',
-            ['reference' => $reference]
+            ['reference' => $reference],
         );
     }
 
@@ -52,9 +52,9 @@ final class Logger implements CommandBus
          * @psalm-suppress MissingClosureReturnType
          */
         return ReflectionObject::of($object, null, null, new ReflectionStrategy)
-            ->extract(...unwrap(ReflectionClass::of(get_class($object))->properties()))
+            ->extract(...unwrap(ReflectionClass::of(\get_class($object))->properties()))
             ->map(function(string $property, $value) {
-                if (is_object($value)) {
+                if (\is_object($value)) {
                     return $this->extractData($value);
                 }
 
@@ -67,7 +67,7 @@ final class Logger implements CommandBus
                     $carry[$property] = $value;
 
                     return $carry;
-                }
+                },
             );
     }
 }
