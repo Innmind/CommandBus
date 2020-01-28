@@ -1,10 +1,9 @@
 # CommandBus
 
-| `master` | `develop` |
-|----------|-----------|
-| [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/Innmind/CommandBus/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/Innmind/CommandBus/?branch=master) | [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/Innmind/CommandBus/badges/quality-score.png?b=develop)](https://scrutinizer-ci.com/g/Innmind/CommandBus/?branch=develop) |
-| [![Code Coverage](https://scrutinizer-ci.com/g/Innmind/CommandBus/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/Innmind/CommandBus/?branch=master) | [![Code Coverage](https://scrutinizer-ci.com/g/Innmind/CommandBus/badges/coverage.png?b=develop)](https://scrutinizer-ci.com/g/Innmind/CommandBus/?branch=develop) |
-| [![Build Status](https://scrutinizer-ci.com/g/Innmind/CommandBus/badges/build.png?b=master)](https://scrutinizer-ci.com/g/Innmind/CommandBus/build-status/master) | [![Build Status](https://scrutinizer-ci.com/g/Innmind/CommandBus/badges/build.png?b=develop)](https://scrutinizer-ci.com/g/Innmind/CommandBus/build-status/develop) |
+| `develop` |
+|-----------|
+| [![codecov](https://codecov.io/gh/Innmind/CommandBus/branch/develop/graph/badge.svg)](https://codecov.io/gh/Innmind/CommandBus) |
+| [![Build Status](https://github.com/Innmind/CommandBus/workflows/CI/badge.svg)](https://github.com/Innmind/CommandBus/actions?query=workflow%3ACI) |
 
 Simple library to route a command to its handler, the interface allows you to compose buses to add capabilities. Each handler must be a `callable`.
 
