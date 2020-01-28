@@ -5,8 +5,8 @@ namespace Innmind\CommandBus;
 
 final class Dequeue implements CommandBus
 {
-    private $handle;
-    private $queue;
+    private CommandBus $handle;
+    private Queue $queue;
 
     public function __construct(CommandBus $handle, Queue $queue)
     {

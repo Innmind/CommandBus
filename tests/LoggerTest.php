@@ -39,7 +39,7 @@ class LoggerTest extends TestCase
 
                     public function __construct()
                     {
-                        $this->str = new Str('watever');
+                        $this->str = Str::of('watever');
                     }
                 };
             }
@@ -68,7 +68,7 @@ class LoggerTest extends TestCase
                                 'wat' => 'wat',
                                 'str' => [
                                     'value' => 'watever',
-                                    'encoding' => 'UTF-8',
+                                    'encoding' => null,
                                 ],
                             ],
                         ];

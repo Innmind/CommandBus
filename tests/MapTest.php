@@ -7,7 +7,10 @@ use Innmind\CommandBus\{
     Map,
     CommandBus,
 };
-use Innmind\Immutable\Map as IMap;
+use Innmind\Immutable\{
+    Map as IMap,
+    Exception\InvalidArgumentException,
+};
 use PHPUnit\Framework\TestCase;
 
 class MapTest extends TestCase
@@ -16,24 +19,23 @@ class MapTest extends TestCase
     {
         $this->assertInstanceOf(
             CommandBus::class,
-            new Map(new IMap('string', 'callable'))
+            new Map(IMap::of('string', 'callable'))
         );
     }
 
     public function testThrowWhenInvalidHandlerMap()
     {
         $this->expectException(\TypeError::class);
-        $this->expectExceptionMessage('Argument 1 must be of type MapInterface<string, callable>');
+        $this->expectExceptionMessage('Argument 1 must be of type Map<string, callable>');
 
-        new Map(new IMap('string', 'string'));
+        new Map(IMap::of('string', 'string'));
     }
 
-    /**
-     * @expectedException Innmind\Immutable\Exception\InvalidArgumentException
-     */
     public function testThrowWhenHandlerNotFound()
     {
-        (new Map(new IMap('string', 'callable')))(new \stdClass);
+        $this->expectException(InvalidArgumentException::class);
+
+        (new Map(IMap::of('string', 'callable')))(new \stdClass);
     }
 
     public function testInvokation()

@@ -8,15 +8,15 @@ use Innmind\Immutable\Set;
 
 final class Except implements ShouldLock
 {
-    private $exceptions;
+    private Set $exceptions;
 
     public function __construct(string ...$exceptions)
     {
-        $this->exceptions = Set::of('string', ...$exceptions);
+        $this->exceptions = Set::strings(...$exceptions);
     }
 
     public function __invoke(\Throwable $e): bool
     {
-        return !$this->exceptions->contains(get_class($e));
+        return !$this->exceptions->contains(\get_class($e));
     }
 }

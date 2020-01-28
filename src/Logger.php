@@ -8,13 +8,14 @@ use Innmind\Reflection\{
     ReflectionClass,
     ExtractionStrategy\ReflectionStrategy,
 };
+use function Innmind\Immutable\unwrap;
 use Psr\Log\LoggerInterface;
 use Ramsey\Uuid\Uuid;
 
 final class Logger implements CommandBus
 {
-    private $handle;
-    private $logger;
+    private CommandBus $handle;
+    private LoggerInterface $logger;
 
     public function __construct(
         CommandBus $handle,
@@ -26,31 +27,34 @@ final class Logger implements CommandBus
 
     public function __invoke(object $command): void
     {
-        $reference = (string) Uuid::uuid4();
+        $reference = Uuid::uuid4()->toString();
 
         $this->logger->info(
             'Command about to be executed',
             [
                 'reference' => $reference,
-                'class' => get_class($command),
+                'class' => \get_class($command),
                 'data' => $this->extractData($command),
-            ]
+            ],
         );
 
         ($this->handle)($command);
 
         $this->logger->info(
             'Command executed',
-            ['reference' => $reference]
+            ['reference' => $reference],
         );
     }
 
     private function extractData(object $object): array
     {
+        /**
+         * @psalm-suppress MissingClosureReturnType
+         */
         return ReflectionObject::of($object, null, null, new ReflectionStrategy)
-            ->extract(...ReflectionClass::of(get_class($object))->properties())
+            ->extract(...unwrap(ReflectionClass::of(\get_class($object))->properties()))
             ->map(function(string $property, $value) {
-                if (is_object($value)) {
+                if (\is_object($value)) {
                     return $this->extractData($value);
                 }
 
@@ -59,10 +63,11 @@ final class Logger implements CommandBus
             ->reduce(
                 [],
                 function(array $carry, string $property, $value): array {
+                    /** @psalm-suppress MixedAssignment */
                     $carry[$property] = $value;
 
                     return $carry;
-                }
+                },
             );
     }
 }

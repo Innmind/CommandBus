@@ -5,10 +5,12 @@ namespace Innmind\CommandBus;
 
 final class Queue
 {
-    private $queue;
+    /** @var \SplQueue<object> */
+    private \SplQueue $queue;
 
     public function __construct()
     {
+        /** @var \SplQueue<object> */
         $this->queue = new \SplQueue;
         $this->queue->setIteratorMode(\SplDoublyLinkedList::IT_MODE_FIFO | \SplDoublyLinkedList::IT_MODE_DELETE);
     }

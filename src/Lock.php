@@ -7,9 +7,9 @@ use Innmind\CommandBus\Exception\CommandBusLocked;
 
 final class Lock implements CommandBus
 {
-    private $handle;
-    private $shouldLock;
-    private $locked = false;
+    private CommandBus $handle;
+    private ShouldLock $shouldLock;
+    private bool $locked = false;
 
     public function __construct(CommandBus $handle, ShouldLock $shouldLock = null)
     {

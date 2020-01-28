@@ -27,30 +27,30 @@ class BootstrapTest extends TestCase
         $log = $buses['logger'];
         $lock = $buses['lock'];
 
-        $this->assertInternalType('callable', $bus);
+        $this->assertIsCallable($bus);
         $this->assertInstanceOf(
             Map::class,
-            $bus(new IMap('string', 'callable'))
+            $bus(IMap::of('string', 'callable'))
         );
         $this->assertInstanceOf(Enqueue::class, $enqueue);
-        $this->assertInternalType('callable', $dequeue);
+        $this->assertIsCallable($dequeue);
         $this->assertInstanceOf(
             Dequeue::class,
-            $dequeue($bus(new IMap('string', 'callable')))
+            $dequeue($bus(IMap::of('string', 'callable')))
         );
-        $this->assertInternalType('callable', $log);
+        $this->assertIsCallable($log);
         $log = $log($this->createMock(LoggerInterface::class));
-        $this->assertInternalType('callable', $log);
+        $this->assertIsCallable($log);
         $this->assertInstanceOf(
             Logger::class,
-            $log($bus(new IMap('string', 'callable')))
+            $log($bus(IMap::of('string', 'callable')))
         );
-        $this->assertInternalType('callable', $lock);
+        $this->assertIsCallable($lock);
         $lock = $lock(new Except);
-        $this->assertInternalType('callable', $lock);
+        $this->assertIsCallable($lock);
         $this->assertInstanceOf(
             Lock::class,
-            $lock($bus(new IMap('string', 'callable')))
+            $lock($bus(IMap::of('string', 'callable')))
         );
     }
 
