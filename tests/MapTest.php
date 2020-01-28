@@ -19,23 +19,23 @@ class MapTest extends TestCase
     {
         $this->assertInstanceOf(
             CommandBus::class,
-            new Map(new IMap('string', 'callable'))
+            new Map(IMap::of('string', 'callable'))
         );
     }
 
     public function testThrowWhenInvalidHandlerMap()
     {
         $this->expectException(\TypeError::class);
-        $this->expectExceptionMessage('Argument 1 must be of type MapInterface<string, callable>');
+        $this->expectExceptionMessage('Argument 1 must be of type Map<string, callable>');
 
-        new Map(new IMap('string', 'string'));
+        new Map(IMap::of('string', 'string'));
     }
 
     public function testThrowWhenHandlerNotFound()
     {
         $this->expectException(InvalidArgumentException::class);
 
-        (new Map(new IMap('string', 'callable')))(new \stdClass);
+        (new Map(IMap::of('string', 'callable')))(new \stdClass);
     }
 
     public function testInvokation()

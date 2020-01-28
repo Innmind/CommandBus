@@ -12,7 +12,7 @@ final class Except implements ShouldLock
 
     public function __construct(string ...$exceptions)
     {
-        $this->exceptions = Set::of('string', ...$exceptions);
+        $this->exceptions = Set::strings(...$exceptions);
     }
 
     public function __invoke(\Throwable $e): bool

@@ -3,19 +3,19 @@ declare(strict_types = 1);
 
 namespace Innmind\CommandBus;
 
-use Innmind\Immutable\MapInterface;
+use Innmind\Immutable\Map as IMap;
 
 final class Map implements CommandBus
 {
-    private MapInterface $handlers;
+    private IMap $handlers;
 
-    public function __construct(MapInterface $handlers)
+    public function __construct(IMap $handlers)
     {
         if (
             (string) $handlers->keyType() !== 'string' ||
             (string) $handlers->valueType() !== 'callable'
         ) {
-            throw new \TypeError('Argument 1 must be of type MapInterface<string, callable>');
+            throw new \TypeError('Argument 1 must be of type Map<string, callable>');
         }
 
         $this->handlers = $handlers;

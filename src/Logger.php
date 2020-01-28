@@ -8,6 +8,7 @@ use Innmind\Reflection\{
     ReflectionClass,
     ExtractionStrategy\ReflectionStrategy,
 };
+use function Innmind\Immutable\unwrap;
 use Psr\Log\LoggerInterface;
 use Ramsey\Uuid\Uuid;
 
@@ -48,7 +49,7 @@ final class Logger implements CommandBus
     private function extractData(object $object): array
     {
         return ReflectionObject::of($object, null, null, new ReflectionStrategy)
-            ->extract(...ReflectionClass::of(get_class($object))->properties())
+            ->extract(...unwrap(ReflectionClass::of(get_class($object))->properties()))
             ->map(function(string $property, $value) {
                 if (is_object($value)) {
                     return $this->extractData($value);

@@ -3,7 +3,7 @@ declare(strict_types = 1);
 
 namespace Innmind\CommandBus;
 
-use Innmind\Immutable\MapInterface;
+use Innmind\Immutable\Map as IMap;
 use Psr\Log\LoggerInterface;
 
 function bootstrap(): array
@@ -11,7 +11,7 @@ function bootstrap(): array
     $queue = new Queue;
 
     return [
-        'bus' => static function(MapInterface $handlers): CommandBus {
+        'bus' => static function(IMap $handlers): CommandBus {
             return new Map($handlers);
         },
         'enqueue' => new Enqueue($queue),

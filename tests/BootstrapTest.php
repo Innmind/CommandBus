@@ -30,27 +30,27 @@ class BootstrapTest extends TestCase
         $this->assertIsCallable($bus);
         $this->assertInstanceOf(
             Map::class,
-            $bus(new IMap('string', 'callable'))
+            $bus(IMap::of('string', 'callable'))
         );
         $this->assertInstanceOf(Enqueue::class, $enqueue);
         $this->assertIsCallable($dequeue);
         $this->assertInstanceOf(
             Dequeue::class,
-            $dequeue($bus(new IMap('string', 'callable')))
+            $dequeue($bus(IMap::of('string', 'callable')))
         );
         $this->assertIsCallable($log);
         $log = $log($this->createMock(LoggerInterface::class));
         $this->assertIsCallable($log);
         $this->assertInstanceOf(
             Logger::class,
-            $log($bus(new IMap('string', 'callable')))
+            $log($bus(IMap::of('string', 'callable')))
         );
         $this->assertIsCallable($lock);
         $lock = $lock(new Except);
         $this->assertIsCallable($lock);
         $this->assertInstanceOf(
             Lock::class,
-            $lock($bus(new IMap('string', 'callable')))
+            $lock($bus(IMap::of('string', 'callable')))
         );
     }
 
