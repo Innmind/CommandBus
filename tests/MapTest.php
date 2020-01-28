@@ -7,7 +7,10 @@ use Innmind\CommandBus\{
     Map,
     CommandBus,
 };
-use Innmind\Immutable\Map as IMap;
+use Innmind\Immutable\{
+    Map as IMap,
+    Exception\InvalidArgumentException,
+};
 use PHPUnit\Framework\TestCase;
 
 class MapTest extends TestCase
@@ -28,11 +31,10 @@ class MapTest extends TestCase
         new Map(new IMap('string', 'string'));
     }
 
-    /**
-     * @expectedException Innmind\Immutable\Exception\InvalidArgumentException
-     */
     public function testThrowWhenHandlerNotFound()
     {
+        $this->expectException(InvalidArgumentException::class);
+
         (new Map(new IMap('string', 'callable')))(new \stdClass);
     }
 
