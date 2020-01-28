@@ -27,7 +27,7 @@ final class Logger implements CommandBus
 
     public function __invoke(object $command): void
     {
-        $reference = (string) Uuid::uuid4();
+        $reference = Uuid::uuid4()->toString();
 
         $this->logger->info(
             'Command about to be executed',
@@ -48,6 +48,9 @@ final class Logger implements CommandBus
 
     private function extractData(object $object): array
     {
+        /**
+         * @psalm-suppress MissingClosureReturnType
+         */
         return ReflectionObject::of($object, null, null, new ReflectionStrategy)
             ->extract(...unwrap(ReflectionClass::of(get_class($object))->properties()))
             ->map(function(string $property, $value) {
@@ -60,6 +63,7 @@ final class Logger implements CommandBus
             ->reduce(
                 [],
                 function(array $carry, string $property, $value): array {
+                    /** @psalm-suppress MixedAssignment */
                     $carry[$property] = $value;
 
                     return $carry;

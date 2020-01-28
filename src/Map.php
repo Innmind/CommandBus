@@ -7,8 +7,12 @@ use Innmind\Immutable\Map as IMap;
 
 final class Map implements CommandBus
 {
+    /** @var IMap<string, callable> */
     private IMap $handlers;
 
+    /**
+     * @param IMap<string, callable> $handlers
+     */
     public function __construct(IMap $handlers)
     {
         if (
