@@ -8,7 +8,7 @@ use Innmind\Immutable\Set;
 
 final class Except implements ShouldLock
 {
-    private $exceptions;
+    private Set $exceptions;
 
     public function __construct(string ...$exceptions)
     {

@@ -15,7 +15,7 @@
         "issues": "http://github.com/Innmind/CommandBus/issues"
     },
     "require": {
-        "php": "~7.2",
+        "php": "~7.4",
         "innmind/immutable": "~2.10",
         "psr/log": "^1.0",
         "ramsey/uuid": "^3.5",

@@ -7,7 +7,7 @@ use Innmind\Immutable\MapInterface;
 
 final class Map implements CommandBus
 {
-    private $handlers;
+    private MapInterface $handlers;
 
     public function __construct(MapInterface $handlers)
     {

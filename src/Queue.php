@@ -5,7 +5,7 @@ namespace Innmind\CommandBus;
 
 final class Queue
 {
-    private $queue;
+    private \SplQueue $queue;
 
     public function __construct()
     {

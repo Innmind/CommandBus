@@ -13,8 +13,8 @@ use Ramsey\Uuid\Uuid;
 
 final class Logger implements CommandBus
 {
-    private $handle;
-    private $logger;
+    private CommandBus $handle;
+    private LoggerInterface $logger;
 
     public function __construct(
         CommandBus $handle,

@@ -5,7 +5,7 @@ namespace Innmind\CommandBus;
 
 final class Enqueue implements CommandBus
 {
-    private $queue;
+    private Queue $queue;
 
     public function __construct(Queue $queue)
     {
