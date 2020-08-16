@@ -19,7 +19,8 @@
         "innmind/immutable": "~3.0",
         "psr/log": "^1.0",
         "ramsey/uuid": "^3.5",
-        "innmind/reflection": "~4.0"
+        "innmind/reflection": "~4.0",
+        "innmind/di": "^1.0"
     },
     "autoload": {
         "psr-4": {
@@ -34,7 +35,7 @@
     },
     "require-dev": {
         "phpunit/phpunit": "~8.0",
-        "vimeo/psalm": "~3.7.0"
+        "vimeo/psalm": "~3.7"
     },
     "scripts": {
         "test": "vendor/bin/phpunit --colors=always"

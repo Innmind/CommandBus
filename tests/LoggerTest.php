@@ -68,7 +68,7 @@ class LoggerTest extends TestCase
                                 'wat' => 'wat',
                                 'str' => [
                                     'value' => 'watever',
-                                    'encoding' => null,
+                                    'encoding' => 'UTF-8',
                                 ],
                             ],
                         ];
