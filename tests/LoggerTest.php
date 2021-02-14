@@ -49,7 +49,7 @@ class LoggerTest extends TestCase
                 return 42;
             }
         };
-        $class = get_class($command);
+        $class = \get_class($command);
         $reference = null;
         $logger = $this->createMock(LoggerInterface::class);
         $logger
@@ -58,7 +58,7 @@ class LoggerTest extends TestCase
             ->withConsecutive(
                 [
                     'Command about to be executed',
-                    $this->callback(function($data) use (&$reference, $class) {
+                    $this->callback(static function($data) use (&$reference, $class) {
                         $reference = $data['reference'] ?? null;
 
                         return $data['class'] === $class &&
@@ -73,13 +73,13 @@ class LoggerTest extends TestCase
                                     ],
                                 ],
                             ];
-                    })
+                    }),
                 ],
                 [
                     'Command executed',
-                    $this->callback(function($data) use (&$reference) {
+                    $this->callback(static function($data) use (&$reference) {
                         return $data === ['reference' => $reference];
-                    })
+                    }),
                 ],
             );
         $innerBus = $this->createMock(CommandBus::class);
@@ -93,7 +93,7 @@ class LoggerTest extends TestCase
         );
 
         $this->assertNull($handle($command));
-        $this->assertTrue(is_string($reference));
+        $this->assertTrue(\is_string($reference));
         $this->assertTrue(!empty($reference));
     }
 }

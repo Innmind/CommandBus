@@ -62,7 +62,7 @@ final class Logger implements CommandBus
             })
             ->reduce(
                 [],
-                function(array $carry, string $property, $value): array {
+                static function(array $carry, string $property, $value): array {
                     /** @psalm-suppress MixedAssignment */
                     $carry[$property] = $value;
 
