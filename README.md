@@ -1,9 +1,8 @@
 # CommandBus
 
-| `develop` |
-|-----------|
-| [![codecov](https://codecov.io/gh/Innmind/CommandBus/branch/develop/graph/badge.svg)](https://codecov.io/gh/Innmind/CommandBus) |
-| [![Build Status](https://github.com/Innmind/CommandBus/workflows/CI/badge.svg)](https://github.com/Innmind/CommandBus/actions?query=workflow%3ACI) |
+[![Build Status](https://github.com/innmind/commandbus/workflows/CI/badge.svg?branch=master)](https://github.com/innmind/commandbus/actions?query=workflow%3ACI)
+[![codecov](https://codecov.io/gh/innmind/commandbus/branch/develop/graph/badge.svg)](https://codecov.io/gh/innmind/commandbus)
+[![Type Coverage](https://shepherd.dev/github/innmind/commandbus/coverage.svg)](https://shepherd.dev/github/innmind/commandbus)
 
 Simple library to route a command to its handler, the interface allows you to compose buses to add capabilities. Each handler must be a `callable`.
 
