@@ -46,17 +46,16 @@ class DequeueTest extends TestCase
         );
         $command = new \stdClass;
         $inner
-            ->expects($this->at(0))
+            ->expects($this->exactly(2))
             ->method('__invoke')
-            ->with($this->callback(static function($command) use ($queue): bool {
-                $queue->enqueue($command);
+            ->withConsecutive(
+                [$this->callback(static function($command) use ($queue): bool {
+                    $queue->enqueue($command);
 
-                return true;
-            }));
-        $inner
-            ->expects($this->at(1))
-            ->method('__invoke')
-            ->with($command);
+                    return true;
+                })],
+                [$command],
+            );
 
         $this->assertNull($handle($command));
     }

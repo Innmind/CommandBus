@@ -66,7 +66,7 @@ class BootstrapTest extends TestCase
             ('stdClass', function() use ($enqueue): void {
                 $enqueue($this);
             })
-            (get_class($this), static function() use (&$called): void {
+            (\get_class($this), static function() use (&$called): void {
                 ++$called;
             });
 

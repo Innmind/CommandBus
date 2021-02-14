@@ -49,39 +49,38 @@ class LoggerTest extends TestCase
                 return 42;
             }
         };
-        $class = get_class($command);
+        $class = \get_class($command);
         $reference = null;
         $logger = $this->createMock(LoggerInterface::class);
         $logger
-            ->expects($this->at(0))
+            ->expects($this->exactly(2))
             ->method('info')
-            ->with(
-                'Command about to be executed',
-                $this->callback(function($data) use (&$reference, $class) {
-                    $reference = $data['reference'] ?? null;
+            ->withConsecutive(
+                [
+                    'Command about to be executed',
+                    $this->callback(static function($data) use (&$reference, $class) {
+                        $reference = $data['reference'] ?? null;
 
-                    return $data['class'] === $class &&
-                        $data['data'] === [
-                            'foo' => 'bar',
-                            'bar' => null,
-                            'baz' => [
-                                'wat' => 'wat',
-                                'str' => [
-                                    'value' => 'watever',
-                                    'encoding' => 'UTF-8',
+                        return $data['class'] === $class &&
+                            $data['data'] === [
+                                'foo' => 'bar',
+                                'bar' => null,
+                                'baz' => [
+                                    'wat' => 'wat',
+                                    'str' => [
+                                        'value' => 'watever',
+                                        'encoding' => 'UTF-8',
+                                    ],
                                 ],
-                            ],
-                        ];
-                })
-            );
-        $logger
-            ->expects($this->at(1))
-            ->method('info')
-            ->with(
-                'Command executed',
-                $this->callback(function($data) use (&$reference) {
-                    return $data === ['reference' => $reference];
-                })
+                            ];
+                    }),
+                ],
+                [
+                    'Command executed',
+                    $this->callback(static function($data) use (&$reference) {
+                        return $data === ['reference' => $reference];
+                    }),
+                ],
             );
         $innerBus = $this->createMock(CommandBus::class);
         $innerBus
@@ -94,7 +93,7 @@ class LoggerTest extends TestCase
         );
 
         $this->assertNull($handle($command));
-        $this->assertTrue(is_string($reference));
+        $this->assertTrue(\is_string($reference));
         $this->assertTrue(!empty($reference));
     }
 }

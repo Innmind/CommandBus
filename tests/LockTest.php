@@ -64,12 +64,12 @@ class LockTest extends TestCase
             $strategy = $this->createMock(ShouldLock::class)
         );
         $inner
-            ->expects($this->at(0))
+            ->expects($this->exactly(2))
             ->method('__invoke')
-            ->will($this->throwException($e = $this->createMock(\Throwable::class)));
-        $inner
-            ->expects($this->at(1))
-            ->method('__invoke');
+            ->will($this->onConsecutiveCalls(
+                $this->throwException($e = $this->createMock(\Throwable::class)),
+                null,
+            ));
         $strategy
             ->expects($this->once())
             ->method('__invoke')

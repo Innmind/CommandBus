@@ -35,7 +35,7 @@ class ContainerTest extends TestCase
         $count = 0;
         $handle = new Container(
             (new ServiceLocator)->add('stdClass', function() use (&$count) {
-                return function (\stdClass $command) use (&$count) {
+                return function(\stdClass $command) use (&$count) {
                     ++$count;
                     $this->assertSame('foo', $command->bar);
                 };
