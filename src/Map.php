@@ -4,7 +4,6 @@ declare(strict_types = 1);
 namespace Innmind\CommandBus;
 
 use Innmind\Immutable\Map as IMap;
-use function Innmind\Immutable\assertMap;
 
 final class Map implements CommandBus
 {
@@ -16,14 +15,16 @@ final class Map implements CommandBus
      */
     public function __construct(IMap $handlers)
     {
-        assertMap('string', 'callable', $handlers, 1);
-
         $this->handlers = $handlers;
     }
 
     public function __invoke(object $command): void
     {
-        $handle = $this->handlers->get(\get_class($command));
+        $class = \get_class($command);
+        $handle = $this->handlers->get($class)->match(
+            static fn($handle) => $handle,
+            static fn() => throw new \LogicException("No handler defined for '$class'"),
+        );
         $handle($command);
     }
 }

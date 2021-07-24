@@ -7,10 +7,7 @@ use Innmind\CommandBus\{
     Map,
     CommandBus,
 };
-use Innmind\Immutable\{
-    Map as IMap,
-    Exception\InvalidArgumentException,
-};
+use Innmind\Immutable\Map as IMap;
 use PHPUnit\Framework\TestCase;
 
 class MapTest extends TestCase
@@ -19,35 +16,27 @@ class MapTest extends TestCase
     {
         $this->assertInstanceOf(
             CommandBus::class,
-            new Map(IMap::of('string', 'callable'))
+            new Map(IMap::of())
         );
-    }
-
-    public function testThrowWhenInvalidHandlerMap()
-    {
-        $this->expectException(\TypeError::class);
-        $this->expectExceptionMessage('Argument 1 must be of type Map<string, callable>');
-
-        new Map(IMap::of('string', 'string'));
     }
 
     public function testThrowWhenHandlerNotFound()
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(\LogicException::class);
 
-        (new Map(IMap::of('string', 'callable')))(new \stdClass);
+        (new Map(IMap::of()))(new \stdClass);
     }
 
     public function testInvokation()
     {
         $count = 0;
-        $handle = new Map(
-            IMap::of('string', 'callable')
-                ('stdClass', function(\stdClass $command) use (&$count) {
-                    ++$count;
-                    $this->assertSame('foo', $command->bar);
-                })
-        );
+        $handle = new Map(IMap::of([
+            'stdClass',
+            function(\stdClass $command) use (&$count) {
+                ++$count;
+                $this->assertSame('foo', $command->bar);
+            },
+        ]));
 
         $command = new \stdClass;
         $command->bar = 'foo';
