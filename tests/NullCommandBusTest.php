@@ -6,6 +6,11 @@ namespace Tests\Innmind\CommandBus;
 use Innmind\CommandBus\{
     NullCommandBus,
     CommandBus,
+    Command,
+};
+use Innmind\Immutable\{
+    Either,
+    SideEffect,
 };
 use PHPUnit\Framework\TestCase;
 
@@ -21,8 +26,9 @@ class NullCommandBusTest extends TestCase
 
     public function testInvokation()
     {
-        $this->assertNull(
-            (new NullCommandBus)(new \stdClass)
+        $this->assertEquals(
+            Either::right(new SideEffect),
+            (new NullCommandBus)($this->createMock(Command::class)),
         );
     }
 }

@@ -13,10 +13,20 @@ use Innmind\DI\{
     Container as ServiceLocator,
     Exception\ServiceNotFound,
 };
+use Innmind\Immutable\{
+    Either,
+    SideEffect,
+};
 use PHPUnit\Framework\TestCase;
+use Innmind\BlackBox\{
+    PHPUnit\BlackBox,
+    Set,
+};
 
 class ContainerTest extends TestCase
 {
+    use BlackBox;
+
     public function testInterface()
     {
         $this->assertInstanceOf(
@@ -34,19 +44,30 @@ class ContainerTest extends TestCase
 
     public function testInvokation()
     {
-        $command = $this->createMock(Command::class);
-        $handler = $this->createMock(Handler::class);
-        $handle = new Container(
-            (new ServiceLocator)->add(
-                \get_class($command),
-                static fn() => $handler,
-            ),
-        );
-        $handler
-            ->expects($this->once())
-            ->method('__invoke')
-            ->with($command);
+        $this
+            ->forAll(new Set\Either(
+                Set\Elements::of(Either::right(new SideEffect)),
+                Set\Decorate::immutable(
+                    static fn($error) => Either::left($error),
+                    Set\AnyType::any(),
+                ),
+            ))
+            ->then(function($expected) {
+                $command = $this->createMock(Command::class);
+                $handler = $this->createMock(Handler::class);
+                $handle = new Container(
+                    (new ServiceLocator)->add(
+                        \get_class($command),
+                        static fn() => $handler,
+                    ),
+                );
+                $handler
+                    ->expects($this->once())
+                    ->method('__invoke')
+                    ->with($command)
+                    ->willReturn($expected);
 
-        $this->assertNull($handle($command));
+                $this->assertSame($expected, $handle($command));
+            });
     }
 }

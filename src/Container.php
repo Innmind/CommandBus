@@ -4,6 +4,9 @@ declare(strict_types = 1);
 namespace Innmind\CommandBus;
 
 use Innmind\DI\ServiceLocator;
+use Innmind\Immutable\{
+    Either,
+};
 
 final class Container implements CommandBus
 {
@@ -14,10 +17,11 @@ final class Container implements CommandBus
         $this->get = $get;
     }
 
-    public function __invoke(Command $command): void
+    public function __invoke(Command $command): Either
     {
         /** @var Handler */
         $handle = ($this->get)(\get_class($command));
-        $handle($command);
+
+        return $handle($command);
     }
 }
