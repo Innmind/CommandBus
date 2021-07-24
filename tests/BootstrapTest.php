@@ -9,8 +9,6 @@ use Innmind\CommandBus\{
     Dequeue,
     Enqueue,
     Logger,
-    Lock,
-    ShouldLock\Except,
 };
 use Innmind\Immutable\Map as IMap;
 use Psr\Log\LoggerInterface;
@@ -25,7 +23,6 @@ class BootstrapTest extends TestCase
         $enqueue = $buses['enqueue'];
         $dequeue = $buses['dequeue'];
         $log = $buses['logger'];
-        $lock = $buses['lock'];
 
         $this->assertIsCallable($bus);
         $this->assertInstanceOf(
@@ -44,13 +41,6 @@ class BootstrapTest extends TestCase
         $this->assertInstanceOf(
             Logger::class,
             $log($bus(IMap::of('string', 'callable')))
-        );
-        $this->assertIsCallable($lock);
-        $lock = $lock(new Except);
-        $this->assertIsCallable($lock);
-        $this->assertInstanceOf(
-            Lock::class,
-            $lock($bus(IMap::of('string', 'callable')))
         );
     }
 

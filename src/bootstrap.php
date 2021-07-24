@@ -7,7 +7,7 @@ use Innmind\Immutable\Map as IMap;
 use Psr\Log\LoggerInterface;
 
 /**
- * @return array{bus: callable(IMap<string, callable>): CommandBus, enqueue: CommandBus, dequeue: callable(CommandBus): CommandBus, logger: callable(LoggerInterface): (callable(CommandBus): CommandBus), lock: callable(ShouldLock = null): (callable(CommandBus): CommandBus)}
+ * @return array{bus: callable(IMap<string, callable>): CommandBus, enqueue: CommandBus, dequeue: callable(CommandBus): CommandBus, logger: callable(LoggerInterface): (callable(CommandBus): CommandBus)}
  */
 function bootstrap(): array
 {
@@ -25,11 +25,6 @@ function bootstrap(): array
         'logger' => static function(LoggerInterface $logger): callable {
             return static function(CommandBus $bus) use ($logger): CommandBus {
                 return new Logger($bus, $logger);
-            };
-        },
-        'lock' => static function(ShouldLock $shouldLock = null): callable {
-            return static function(CommandBus $bus) use ($shouldLock): CommandBus {
-                return new Lock($bus, $shouldLock);
             };
         },
     ];
