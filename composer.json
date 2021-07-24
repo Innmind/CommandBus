@@ -17,9 +17,6 @@
     "require": {
         "php": "~7.4|~8.0",
         "innmind/immutable": "~3.0",
-        "psr/log": "^1.0",
-        "ramsey/uuid": "^3.5",
-        "innmind/reflection": "~4.0",
         "innmind/di": "^1.0"
     },
     "autoload": {
