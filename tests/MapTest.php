@@ -6,6 +6,8 @@ namespace Tests\Innmind\CommandBus;
 use Innmind\CommandBus\{
     Map,
     CommandBus,
+    Command,
+    Handler,
 };
 use Innmind\Immutable\Map as IMap;
 use PHPUnit\Framework\TestCase;
@@ -24,23 +26,22 @@ class MapTest extends TestCase
     {
         $this->expectException(\LogicException::class);
 
-        (new Map(IMap::of()))(new \stdClass);
+        (new Map(IMap::of()))($this->createMock(Command::class));
     }
 
     public function testInvokation()
     {
-        $count = 0;
+        $command = $this->createMock(Command::class);
+        $handler = $this->createMock(Handler::class);
         $handle = new Map(IMap::of([
-            'stdClass',
-            function(\stdClass $command) use (&$count) {
-                ++$count;
-                $this->assertSame('foo', $command->bar);
-            },
+            \get_class($command),
+            $handler,
         ]));
+        $handler
+            ->expects($this->once())
+            ->method('__invoke')
+            ->with($command);
 
-        $command = new \stdClass;
-        $command->bar = 'foo';
         $this->assertNull($handle($command));
-        $this->assertSame(1, $count);
     }
 }

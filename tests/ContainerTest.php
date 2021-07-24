@@ -6,6 +6,8 @@ namespace Tests\Innmind\CommandBus;
 use Innmind\CommandBus\{
     Container,
     CommandBus,
+    Command,
+    Handler,
 };
 use Innmind\DI\{
     Container as ServiceLocator,
@@ -27,24 +29,24 @@ class ContainerTest extends TestCase
     {
         $this->expectException(ServiceNotFound::class);
 
-        (new Container(new ServiceLocator))(new \stdClass);
+        (new Container(new ServiceLocator))($this->createMock(Command::class));
     }
 
     public function testInvokation()
     {
-        $count = 0;
+        $command = $this->createMock(Command::class);
+        $handler = $this->createMock(Handler::class);
         $handle = new Container(
-            (new ServiceLocator)->add('stdClass', function() use (&$count) {
-                return function(\stdClass $command) use (&$count) {
-                    ++$count;
-                    $this->assertSame('foo', $command->bar);
-                };
-            }),
+            (new ServiceLocator)->add(
+                \get_class($command),
+                static fn() => $handler,
+            ),
         );
+        $handler
+            ->expects($this->once())
+            ->method('__invoke')
+            ->with($command);
 
-        $command = new \stdClass;
-        $command->bar = 'foo';
         $this->assertNull($handle($command));
-        $this->assertSame(1, $count);
     }
 }

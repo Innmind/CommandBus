@@ -14,10 +14,10 @@ final class Container implements CommandBus
         $this->get = $get;
     }
 
-    public function __invoke(object $command): void
+    public function __invoke(Command $command): void
     {
+        /** @var Handler */
         $handle = ($this->get)(\get_class($command));
-        /** @psalm-suppress InvalidFunctionCall */
         $handle($command);
     }
 }
